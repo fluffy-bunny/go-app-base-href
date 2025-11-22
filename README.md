@@ -2,8 +2,6 @@
 
 Hosting go-app in base href sub folders
 
-I am on windows so the arch
-
 # build what wasm and static files.
 
 ```shell
