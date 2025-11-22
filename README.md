@@ -2,7 +2,7 @@
 
 Hosting go-app in base href sub folders
 
-# build what wasm and static files.
+# build the wasm and static files.
 
 ```shell
 make generate-static
