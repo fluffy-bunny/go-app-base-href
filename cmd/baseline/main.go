@@ -10,6 +10,11 @@ import (
 )
 
 func main() {
+
+	// set up flags.  generate_static, serve static, generate_serve
+	generateStatic := flag.Bool("generate_static", false, "Generate static website")
+	flag.Parse()
+
 	my_app.SetupRoutes("demo1", "")
 	app.RunWhenOnBrowser()
 	appHandler := &app.Handler{
@@ -19,9 +24,6 @@ func main() {
 	// set up routes
 	http.Handle("/", appHandler)
 
-	// set up flags.  generate_static, serve static, generate_serve
-	generateStatic := flag.Bool("generate_static", false, "Generate static website")
-	flag.Parse()
 	if *generateStatic {
 		err := app.GenerateStaticWebsite("static_output/base_line", appHandler)
 		if err != nil {

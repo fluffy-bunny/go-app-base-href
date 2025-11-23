@@ -14,48 +14,49 @@ else
 endif
 
 # Directories
-WASM_SRC := ./cmd/demo1
-SERVER_SRC := ./cmd/server
-BUILDER_SRC := ./cmd/builder
+BASELINE_WASM_SRC := ./cmd/baseline
+SERVER_SRC := ./cmd/href_server_host
+BUILDER_SRC := ./cmd/href_app
+HREF_WASM_SRC := ./cmd/href_wasm
 STATIC_OUT := ./static_output/demo1/web
-SERVER_BIN := server
-BUILDER_BIN := builder
+SERVER_BIN := href_server_host
+BUILDER_BIN := href_app
+BASELINE_APP := baseline_app
 
-.PHONY: all build build-wasm build-builder generate-static run clean
+.PHONY: all build build-wasm build-href-app generate-static run clean
 
 all: build
 
-build-wasm-baseline:
+build-baseline-wasm:
 	@echo "Building Baseline WASM..."
 	@mkdir -p web
-	GOOS=$(GOOS_WASM) GOARCH=$(GOARCH_WASM) go build -o web/app.wasm $(WASM_SRC)
+	GOOS=$(GOOS_WASM) GOARCH=$(GOARCH_WASM) go build -o web/app.wasm $(BASELINE_WASM_SRC)
 
+build-href-wasm:
+	@echo "Building HREF WASM..."
+	@mkdir -p $(STATIC_OUT)
+	GOOS=$(GOOS_WASM) GOARCH=$(GOARCH_WASM) go build -o $(STATIC_OUT)/app.wasm $(HREF_WASM_SRC)
 
 build: generate-static
 	@echo "Building server..."
-	go build -o $(SERVER_BIN) $(SERVER_SRC)
+	go build -o $(SERVER_BIN)$(EXE_EXT) $(SERVER_SRC)
 
-build-wasm:
-	@echo "Building WASM..."
-	@mkdir -p $(STATIC_OUT)
-	GOOS=$(GOOS_WASM) GOARCH=$(GOARCH_WASM) go build -o $(STATIC_OUT)/app.wasm $(BUILDER_SRC)
+build-baseline-app:
+	@echo "Building Baseline App..."
+	GOOS=$(GOOS) GOARCH=$(GOARCH) go build -o $(BASELINE_APP)$(EXE_EXT) $(BASELINE_WASM_SRC)
 
-build-demo1-app:
-	@echo "Building Demo1 App..."
-	GOOS=$(GOOS) GOARCH=$(GOARCH) go build -o demo1_app$(EXE_EXT) $(WASM_SRC)
-
-build-builder:
-	@echo "Building builder..."
+build-href-app:
+	@echo "Building HREF App..."
 	GOOS=$(GOOS) GOARCH=$(GOARCH) go build -o $(BUILDER_BIN)$(EXE_EXT) $(BUILDER_SRC)
 
-generate-static: build-wasm-baseline build-wasm build-builder build-demo1-app
+generate-static: build-baseline-wasm build-href-wasm build-href-app build-baseline-app
 	@echo "Generating static site..."
 	./$(BUILDER_BIN)$(EXE_EXT) -generate_static
-	./demo1_app$(EXE_EXT) -generate_static
+	./$(BASELINE_APP)$(EXE_EXT) -generate_static
 
 run: build
 	@echo "Running server..."
-	./$(SERVER_BIN)
+	./$(SERVER_BIN)$(EXE_EXT)
 
 clean:
 	@echo "Cleaning..."

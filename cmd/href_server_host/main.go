@@ -36,7 +36,7 @@ func main() {
 
 	// Serve the WASM file from the web folder for demo1
 	e.GET("/demo1/web/app.wasm", func(c echo.Context) error {
-		return c.File("web/app.wasm")
+		return c.File("static_output/demo1/web/app.wasm")
 	})
 
 	// Serve static files from static_output/demo1 at /demo1
