@@ -37,4 +37,5 @@ go run .\cmd\href_server_host\
 [base href host](http://localhost:3556/)
 
 ![alt text](baseref-selector.png)  
-![alt text](baseref-demo1-home.png)
+![alt text](baseref-demo1-home.png)  
+![alt text](baseref-demo1-page1.png)
