@@ -13,12 +13,12 @@ This produces 2 outputs. One is a base line where I didn't change anything. The 
 # baseline
 
 ```shell
-go run .\cmd\server-baseline\
+go run .\cmd\baseline_server_host\
 ```
 
-[baseline host](http://localhost:3557/)  
+[baseline host](http://localhost:3557/)
 
-![alt text](base-line.png)  
+![alt text](base-line.png)
 
 # base href
 
@@ -31,10 +31,10 @@ I am using a [base href resolver](./pkg/ResourceResolvers/BaseHRefResolver.go) t
 ```
 
 ```shell
-go run .\cmd\server\
+go run .\cmd\href_server_host\
 ```
 
-[base href host](http://localhost:3556/)  
+[base href host](http://localhost:3556/)
 
 ![alt text](baseref-selector.png)  
-![alt text](baseref-demo1-home.png)  
+![alt text](baseref-demo1-home.png)
