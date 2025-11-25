@@ -15,7 +15,7 @@ func main() {
 	generateStatic := flag.Bool("generate_static", false, "Generate static website")
 	flag.Parse()
 
-	my_app.SetupRoutes("demo1", "")
+	my_app.SetupRoutes("demo1")
 	app.RunWhenOnBrowser()
 	appHandler := &app.Handler{
 		Name:        "Demo1",

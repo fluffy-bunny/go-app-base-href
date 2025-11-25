@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"log"
 
 	"demo-project/pkg/ResourceResolvers"
@@ -13,17 +14,19 @@ import (
 )
 
 func main() {
-	my_app.SetupRoutes("demo1", "")
+	my_app.SetupRoutes("demo1")
 	version := xid.New().String()
 
 	// set up flags.  generate_static, serve static, generate_serve
 	generateStatic := flag.Bool("generate_static", false, "Generate static website")
 	flag.Parse()
 
+	appLocation := "/demo1"
 	if *generateStatic {
 		resourceResolver := ResourceResolvers.ResourceResolverWithBaseHRefResolverOptions(
 			ResourceResolvers.BaseHRefResolverOptions{
 				Version: version,
+				Prefix:  appLocation,
 			},
 		)
 		appHandler := &app.Handler{
@@ -32,7 +35,7 @@ func main() {
 			Description: "A demo application hosted in a subfolder",
 			Icon:        app.Icon{},
 			RawHeaders: []string{
-				"<base href=\"/demo1/\">",
+				fmt.Sprintf("<base href=\"%s/\">", appLocation),
 			},
 			Resources:          resourceResolver,
 			Styles:             []string{},

@@ -9,21 +9,26 @@ import (
 type (
 	BaseHRefResolverOptions struct {
 		Version string
+		Prefix  string
 	}
 )
 
 func ResourceResolverWithBaseHRefResolverOptions(
 	options BaseHRefResolverOptions,
 ) app.ResourceResolver {
-	return versionedCacheBustingBaseHRefResourceResolver{
+	rr := versionedCacheBustingBaseHRefResourceResolver{
 		version: options.Version,
+		prefix:  options.Prefix,
 	}
+
+	return rr
 }
 
 type versionedCacheBustingBaseHRefResourceResolver struct {
 	app.ResourceResolver
-
-	version string
+	baseResolver app.ResourceResolver
+	version      string
+	prefix       string
 }
 
 func (r versionedCacheBustingBaseHRefResourceResolver) Resolve(path string) string {
@@ -31,7 +36,11 @@ func (r versionedCacheBustingBaseHRefResourceResolver) Resolve(path string) stri
 
 	case
 		"/",
-		"/web",
+		"/web":
+		if r.prefix != "" {
+			path = r.prefix + path
+		}
+	case
 		"/web/app.wasm",
 		"/app.js",
 		"/app-worker.js",

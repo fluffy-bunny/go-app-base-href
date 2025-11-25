@@ -8,6 +8,6 @@ import (
 
 func main() {
 
-	my_app.SetupRoutes("demo1", "demo1")
+	my_app.SetupRoutes("demo1")
 	app.RunWhenOnBrowser()
 }

@@ -1,6 +1,8 @@
 package app
 
 import (
+	"strings"
+
 	"github.com/maxence-charriere/go-app/v10/pkg/app"
 )
 
@@ -12,7 +14,7 @@ type Home struct {
 func (h *Home) Render() app.UI {
 	return app.Div().Body(
 		app.H1().Text("Home Page - "+h.Name),
-		app.A().Href("page1").Text("Go to Page 1"),
+		app.A().Href(fixHRef("/page1")).Text("Go to Page 1"),
 	)
 }
 
@@ -20,18 +22,27 @@ type Page1 struct {
 	app.Compo
 }
 
+func fixHRef(href string) string {
+	rootPrefix := app.Getenv("GOAPP_ROOT_PREFIX")
+
+	if rootPrefix == "" || rootPrefix == "/" {
+		return href
+	}
+	rr := strings.TrimRight(rootPrefix, "/")
+	return rr + href
+
+}
 func (p *Page1) Render() app.UI {
+
 	return app.Div().Body(
 		app.H1().Text("Page 1"),
-		app.A().Href("/").Text("Back to Home"),
+		app.A().Href(fixHRef("/")).Text("Back to Home"),
 	)
 }
 
-func SetupRoutes(name string, baseRef string) {
+func SetupRoutes(name string) {
 	fixPath := func(path string) string {
-		if baseRef != "" {
-			return "/" + baseRef + path
-		}
+
 		return path
 	}
 	app.Route(fixPath("/"), func() app.Composer { return &Home{Name: name} })

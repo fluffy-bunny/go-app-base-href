@@ -2,6 +2,8 @@ module demo-project
 
 go 1.25.4
 
+replace github.com/maxence-charriere/go-app/v10 => ../go-app-1099
+
 require (
 	github.com/labstack/echo/v4 v4.13.4
 	github.com/maxence-charriere/go-app/v10 v10.1.8

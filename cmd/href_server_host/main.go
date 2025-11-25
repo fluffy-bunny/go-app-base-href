@@ -29,6 +29,10 @@ func main() {
 <body>
 	<h1>Select Demo</h1>
 	<p><a href="/demo1/">Go to Demo 1</a></p>
+
+	<h1>Select Demo double next</h1>
+	<p><a href="/demo1/nest/">Go to Demo 1 double nest</a></p>
+
 </body>
 </html>
 `)
@@ -39,8 +43,13 @@ func main() {
 		return c.File("static_output/demo1/web/app.wasm")
 	})
 
-	// Serve static files from static_output/demo1 at /demo1
+	e.GET("/demo1/nest/web/app.wasm", func(c echo.Context) error {
+		return c.File("static_output/demo1/nestweb/app.wasm")
+	})
+
+	// Serve static files from static_output/demo1 at /demo1S
 	e.Static("/demo1", "static_output/demo1")
+	e.Static("/demo1/nest", "static_output/demo1/nest")
 
 	// SPA fallback for demo1 routes (must come after Static)
 	e.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
